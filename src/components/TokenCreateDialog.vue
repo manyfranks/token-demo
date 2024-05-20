@@ -3,23 +3,24 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-card>
-          <v-card-title>
-            <span class="headline">Create a new Token</span>
-          </v-card-title>
+					<div class="image-container">
+						<img src="../assets/NCX.png" alt="Impact Credits" width="100px" />
+					</div>
+          <v-card-title style="display: flex; justify-content: center; width: 100%;">
+  Generate New Impact Credits
+</v-card-title>
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12">
+                <v-col cols="6">
                   <v-text-field
-                    label="Name*"
+                    label="Token Name*"
                     :rules="nameRules"
                     v-model="name"
                     required
                   ></v-text-field>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="4">
+								<v-col cols="6">
                   <v-text-field
                     label="Symbol*"
                     :rules="symbolRules"
@@ -27,17 +28,17 @@
                     required
                   ></v-text-field>
                 </v-col>
-                <v-col cols="4">
+              </v-row>
+              <v-row>
+
+                <v-col cols="6">
                   <v-text-field
-                    label="Decimals*"
-                    required
-                    v-model="decimals"
-                    :rules="decimalsRules"
+                    label="Transaction Fees"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="6">
                   <v-text-field
-                    label="Initial Supply*"
+                    label="Total Token Amount*"
                     required
                     v-model="initialSupply"
                     :rules="integerRules"
@@ -126,8 +127,8 @@ export default {
       dialog: false,
       decimals: 0,
       initialSupply: 0,
-      name: "",
-      symbol: "",
+      name: "Impact Credit	",
+      symbol: "IMC",
       defaultFreezeStatus: false,
       adminKey: true,
       wipeKey: true,
@@ -158,10 +159,10 @@ export default {
   created() {
     EventBus.$on("tokenCreate", () => {
       this.valid = false;
-      this.decimals = "";
+      this.decimals = "0";
       this.initialSupply = "";
-      this.name = "";
-      this.symbol = "";
+      this.name = "Impact Credit";
+      this.symbol = "IMC";
       this.defaultFreezeStatus = false;
       this.adminKey = true;
       this.wipeKey = true;
@@ -219,6 +220,25 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.v-card-title {
+	display: flex !important; /* Ensures the contents inside v-card-title can be flexibly aligned */
+  justify-content: center !important; /* Centers the content horizontally */
+  width: 100% !important; /* Ensures the title takes full width of its container */
+}
+
+.v-card {
+    font-family: 'Nunito', sans-serif;
+    background-color: #ffffff !important; /* Very dark gray to black background */
+    color: #1a1a1a !important; /* White text for high contrast */
+    border: 1px solid #333333; /* Slight border for definition */
+    border-radius: 8px; /* Sharp corners */
+}
+
+.image-container {
+	padding-top: 20px;
+}
+
 h3 {
   margin: 40px 0 0;
 }

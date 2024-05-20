@@ -5,12 +5,17 @@ import store from "./store/store";
 import vuetify from "./plugins/vuetify";
 
 Vue.config.productionTip = false;
-Vue.config.productionTip = false;
-// Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
-// Vue.http.headers.common['Access-Control-Allow-Origin'] = true
 
-void store.dispatch("setup");
-void store.dispatch("fetch");
+void store.dispatch("setup").then(() => {
+  console.log("Setup complete");
+  void store.dispatch("fetch").then(() => {
+    console.log("Fetch complete");
+  }).catch(error => {
+    console.error("Error during fetch:", error);
+  });
+}).catch(error => {
+  console.error("Error during setup:", error);
+});
 
 new Vue({
   router,

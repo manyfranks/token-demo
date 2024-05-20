@@ -10,8 +10,7 @@
             Transfer one Non Fungible Token
           </v-card-subtitle>
           <v-card-subtitle v-if="!isNFT" class="text-left">
-            Transfer a Fungible Token, optionally exchanging hBar in one atomic
-            transaction
+            Transfer these Impact Credits to any approved user below
           </v-card-subtitle>
           <v-card-text>
             <v-container>
@@ -38,7 +37,7 @@
               <v-row v-if="!isNFT">
                 <v-col cols="12">
                   <v-text-field
-                    label="Token Quantity* (includes decimals, for 100.02 input 10002)"
+                    label="Amount to Transfer*"
                     :rules="quantityRules"
                     v-model="quantity"
                     required
@@ -58,7 +57,7 @@
               <v-row v-else>
                 <v-col cols="12">
                   <v-text-field
-                    label="hBar* (Token(s) recipient pays in hBar)"
+                    label="Fees* (Token(s) recipient pays in ETH)"
                     :rules="integerRules"
                     v-model="hBars"
                     required
@@ -97,8 +96,8 @@ export default {
   name: "TransferDialog",
   data: function() {
     return {
-      accounts: getUserAccountsWithNames(""),
-      marketPlaceAccountId: getAccountDetails("Marketplace").accountId,
+      accounts: [],
+      marketPlaceAccountId: "",
       valid: false,
       dialog: false,
       quantity: 0,
@@ -158,6 +157,11 @@ export default {
     EventBus.$on("transferDialog", operation => {
       this.accounts = getUserAccountsWithNames("");
       this.marketPlaceAccountId = getAccountDetails("Marketplace").accountId;
+
+      // Add logging to check the account details
+      console.log("Accounts:", this.accounts);
+      console.log("Marketplace Account ID:", this.marketPlaceAccountId);
+
       this.valid = false;
       this.tokenId = operation.tokenId;
       this.transferFrom = operation.transferFrom;
@@ -167,6 +171,9 @@ export default {
       this.quantity = this.isNFT ? 1 : 0;
       this.offer = 0;
       this.name = operation.name;
+
+      // Add logging to check the operation details
+      console.log("Operation details:", operation);
     });
   }
 };

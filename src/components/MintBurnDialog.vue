@@ -5,7 +5,7 @@
         <v-card>
           <v-card-title>
             <span v-if="operation === 'mint'" class="headline"
-              >Mint additional tokens</span
+              >Issue Additional Impact Credits</span
             >
             <span v-else class="headline">Burn tokens</span>
           </v-card-title>
@@ -36,7 +36,7 @@
               :disabled="!valid"
               v-if="operation === 'mint'"
             >
-              Mint
+              Create
             </v-btn>
             <v-btn
               color="blue darken-1"
@@ -100,8 +100,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.v-card-title {
+	font-family: "Nunito", sans-serif;
+}
 h3 {
   margin: 40px 0 0;
+	
 }
 ul {
   list-style-type: none;

@@ -4,8 +4,9 @@ import createPersistedState from "vuex-persistedstate";
 import { accountCreate } from "../service/accountCreate";
 import { accountGetInfo } from "../service/accountGetInfo";
 import { tokenGetInfo } from "../service/tokenService";
-import { notifySuccess } from "../utils";
+import { notifySuccess, notifyError } from "../utils";
 import { EventBus } from "../eventBus";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -25,15 +26,19 @@ export default new Vuex.Store({
       state.currentTokenId = tokenId;
     },
     setTokens(state, tokens) {
+      console.log("Setting tokens:", tokens); // Debug log
       state.tokens = tokens;
     },
     setAccounts(state, accounts) {
+      console.log("Setting accounts:", accounts); // Debug log
       state.accounts = accounts;
     },
     setAccount(state, account) {
+      console.log("Setting account:", account); // Debug log
       Vue.set(state.accounts, account.accountId, account);
     },
     setToken(state, token) {
+      console.log("Setting token:", token); // Debug log
       Vue.set(state.tokens, token.tokenId, token);
     },
     addBid(state, bid) {
@@ -123,25 +128,35 @@ export default new Vuex.Store({
   actions: {
     async setup({ commit, state }) {
       if (Object.keys(state.accounts).length === 0) {
-        // set ourselves up
-        // create issuer account
-        let newAccount = await accountCreate("Issuer");
-        commit("setAccount", newAccount);
-        notifySuccess("Setting up demo 1/4 - issuer account created");
-        // create user 1
-        newAccount = await accountCreate("Alice");
-        commit("setAccount", newAccount);
-        notifySuccess("Setting up demo 2/4 - Alice wallet account created");
-        // create user 2
-        newAccount = await accountCreate("Bob");
-        commit("setAccount", newAccount);
-        notifySuccess("Setting up demo 3/4 - Bob wallet account created");
-        // create user 3
-        newAccount = await accountCreate("Marketplace");
-        commit("setAccount", newAccount);
-        notifySuccess(
-          "Setting up demo 4/4 - Marketplace wallet account created"
-        );
+        try {
+          // set ourselves up
+          // create issuer account
+          let newAccount = await accountCreate("Issuer");
+          console.log("Created account:", newAccount); // Debug log
+          commit("setAccount", newAccount);
+          notifySuccess("Setting up demo 1/4 - Treasury account created");
+
+          // create user 1
+          newAccount = await accountCreate("Alice");
+          console.log("Created account:", newAccount); // Debug log
+          commit("setAccount", newAccount);
+          notifySuccess("Setting up demo 2/4 - PO wallet account created");
+
+          // create user 2
+          newAccount = await accountCreate("Bob");
+          console.log("Created account:", newAccount); // Debug log
+          commit("setAccount", newAccount);
+          notifySuccess("Setting up demo 3/4 - MB wallet account created");
+
+          // create user 3
+          newAccount = await accountCreate("Marketplace");
+          console.log("Created account:", newAccount); // Debug log
+          commit("setAccount", newAccount);
+          notifySuccess("Setting up demo 4/4 - NCX wallet account created");
+        } catch (err) {
+          notifyError("Error during setup: " + err.message);
+          console.error(err);
+        }
       }
       commit("setCurrentTokenId", undefined);
       notifySuccess("Demo Ready");
@@ -149,36 +164,40 @@ export default new Vuex.Store({
       EventBus.$emit("busy", false);
     },
     async fetchAccounts({ commit, state }) {
-      if (typeof state.accounts === "undefined") {
-        return;
-      }
-      if (Object.keys(state.accounts).length === 0) {
+      if (typeof state.accounts === "undefined" || Object.keys(state.accounts).length === 0) {
         return;
       }
       for (const key in state.accounts) {
         if (!state.enablePoll) {
           return;
         }
-        let account = state.accounts[key];
-        const accountDetails = await accountGetInfo(key);
-        account.tokenRelationships = accountDetails;
-        commit("setAccount", account);
+        try {
+          let account = state.accounts[key];
+          const accountDetails = await accountGetInfo(key);
+          account.tokenRelationships = accountDetails;
+          commit("setAccount", account);
+        } catch (err) {
+          notifyError("Error fetching account info for " + key + ": " + err.message);
+          console.error(err);
+        }
       }
     },
     async fetchTokens({ commit, state }) {
-      if (typeof state.tokens === "undefined") {
-        return;
-      }
-      if (Object.keys(state.tokens).length === 0) {
+      if (typeof state.tokens === "undefined" || Object.keys(state.tokens).length === 0) {
         return;
       }
       for (const key in state.tokens) {
         if (!state.enablePoll) {
           return;
         }
-        const token = state.tokens[key];
-        const tokenUpdate = await tokenGetInfo(token);
-        commit("setToken", tokenUpdate);
+        try {
+          const token = state.tokens[key];
+          const tokenUpdate = await tokenGetInfo(token);
+          commit("setToken", tokenUpdate);
+        } catch (err) {
+          notifyError("Error fetching token info for " + key + ": " + err.message);
+          console.error(err);
+        }
       }
     },
     async fetch({ dispatch, state }) {

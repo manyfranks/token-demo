@@ -1,319 +1,276 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-card :color="backgroundColor">
-        <v-toolbar :color="headingColor" dark>
-          <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-title class="white--text">{{
-            token.tokenId
-          }}</v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>
-          <v-row v-if="token.isNFT">
-            <v-col cols="12" v-if="token.fileStorageProtocol === 'HEDERA'">
-              Token properties stored in Hedera File Id: {{ fileId }}
-            </v-col>
-            <v-col cols="12" v-if="token.fileStorageProtocol === 'IPFS'">
-              Token properties stored in IPFS File Id: {{ fileId }}
-            </v-col>
-          </v-row>
-          <v-row v-if="!token.isNFT" dense>
-            <v-col cols="6"
-              ><v-text-field
-                label="Decimals"
-                :value="token.decimals"
-                outlined
-                dense
-                disabled
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6"
-              ><v-text-field
-                label="Supply"
-                :value="supply"
-                outlined
-                dense
-                disabled
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row dense>
-            <v-col cols="6"
-              ><v-text-field
-                label="Treasury"
-                :value="token.treasury"
-                outlined
-                dense
-                disabled
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6"
-              ><v-text-field
-                label="Auto Renew Account"
-                :value="token.autoRenewAccount"
-                outlined
-                dense
-                disabled
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row dense>
-            <v-col cols="6"
-              ><v-text-field
-                label="Auto Renew Period"
-                :value="autoRenewPeriod"
-                outlined
-                dense
-                disabled
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6"
-              ><v-text-field
-                label="Expiry"
-                :value="expiry"
-                outlined
-                dense
-                disabled
-              ></v-text-field>
-            </v-col>
-          </v-row>
-
-          <v-row dense>
-            <v-col cols="4">
-              <v-checkbox
-                v-model="token.adminKey"
-                label="Admin"
-                dense
-                disabled
-                hide-details
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="4">
-              <v-checkbox
-                v-model="token.supplyKey"
-                label="Change Supply"
-                disabled
-                dense
-                hide-details
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="4">
-              <v-checkbox
-                v-model="token.kycKey"
-                label="KYC"
-                disabled
-                dense
-                hide-details
-              ></v-checkbox>
-            </v-col>
-          </v-row>
-          <v-row dense>
-            <v-col cols="4">
-              <v-checkbox
-                v-model="token.wipeKey"
-                label="Wipe"
-                disabled
-                dense
-                hide-details
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="4">
-              <v-checkbox
-                v-model="token.freezeKey"
-                label="Freeze"
-                disabled
-                dense
-                hide-details
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="4">
-              <v-checkbox
-                v-model="token.defaultFreezeStatus"
-                disabled
-                label="Default Freeze"
-                dense
-                hide-details
-              ></v-checkbox>
-            </v-col>
-          </v-row>
-          <v-container v-if="token.isNFT">
-            <v-row
-              dense
-              align="center"
-              justify="center"
-              v-if="token.isNFT && !keyValues.length"
-            >
-              <v-progress-circular indeterminate></v-progress-circular>
-              Waiting for file availability.
-            </v-row>
-            <v-container v-if="imageData">
-              <v-row dense align="center" justify="center">
-                <v-col cols="8">
-                  <v-simple-table fixed-header height="200px">
-                    <template v-slot:default>
-                      <thead>
-                        <tr>
-                          <th class="text-left">
-                            Property
-                          </th>
-                          <th class="text-left">
-                            value
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="keyValue in keyValues" :key="keyValue.key">
-                          <td class="text-left">{{ keyValue.key }}</td>
-                          <td class="text-left">{{ keyValue.value }}</td>
-                        </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-card>
+          <v-card-title class="headline">
+            Generate New Impact Credits
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Unique ID*"
+                    :rules="nameRules"
+                    v-model="name"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="4">
+                  <v-text-field
+                    label="Symbol*"
+                    :rules="symbolRules"
+                    v-model="symbol"
+                    required
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="4">
-                  <v-img v-if="imageData" :src="imageData" width="100%"></v-img>
+                  <v-text-field
+                    label="Whole or Decimal*"
+                    required
+                    v-model="decimals"
+                    :rules="decimalsRules"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="4">
+                  <v-text-field
+                    label="Amount*"
+                    required
+                    v-model="initialSupply"
+                    :rules="integerRules"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="6">
+                  <v-checkbox
+                    v-model="adminKey"
+                    label="Enable Admin"
+                  ></v-checkbox>
+                </v-col>
+                <v-col cols="6">
+                  <v-checkbox
+                    v-model="supplyKey"
+                    label="Change Supply"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="6">
+                  <v-checkbox v-model="kycKey" label="Enable KYC"></v-checkbox>
+                </v-col>
+                <v-col cols="6">
+                  <v-checkbox
+                    v-model="wipeKey"
+                    label="Enable Wipe"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="6">
+                  <v-checkbox
+                    v-model="freezeKey"
+                    label="Enable Freeze"
+                    @click="setFreeze"
+                  ></v-checkbox>
+                </v-col>
+                <v-col cols="6">
+                  <v-checkbox
+                    v-model="defaultFreezeStatus"
+                    :disabled="!freezeKey"
+                    label="Default"
+                  ></v-checkbox>
                 </v-col>
               </v-row>
             </v-container>
-            <v-container v-else>
-              <v-row dense>
-                <v-col cols="12">
-                  <v-simple-table fixed-header height="200px">
-                    <template v-slot:default>
-                      <thead>
-                        <tr>
-                          <th class="text-left">
-                            Property
-                          </th>
-                          <th class="text-left">
-                            Value
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="keyValue in keyValues" :key="keyValue.key">
-                          <td class="text-left">{{ keyValue.key }}</td>
-                          <td class="text-left">{{ keyValue.value }}</td>
-                        </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+            <small>*indicates required field</small>
+            <br />
+            <small>
+              Admin, KYC, Wipe, and Freeze keys will default to a common key if
+              set. They can, however, be set independently through the API.
+            </small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="dialog = false">
+              Cancel
+            </v-btn>
+            <v-btn color="primary" text @click="create" :disabled="!valid">
+              Create
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-dialog>
   </v-row>
 </template>
+
 <script>
 import { EventBus } from "../eventBus";
-import { amountWithDecimals, secondsToParts } from "../utils";
-import { fileGetContents } from "@/service/fileService";
+import { tokenCreate } from "../service/tokenService";
+import { PrivateKey } from "@hashgraph/sdk";
+import { getAccountDetails } from "../utils";
 
 export default {
-  name: "TokenDetailsDialog",
+  name: "TokenCreateDialog",
   data: function() {
     return {
-      token: {},
       valid: false,
       dialog: false,
+      decimals: 0,
       initialSupply: 0,
-      supply: 0,
-      expiry: 0,
-      autoRenewPeriod: "",
-      headingColor: "primary",
-      title: "",
-      backgroundColor: "white",
-      properties: "",
-      imageData: undefined,
-      keyValues: [],
-      fileId: ""
+      name: "",
+      symbol: "",
+      defaultFreezeStatus: false,
+      adminKey: true,
+      wipeKey: true,
+      freezeKey: true,
+      kycKey: true,
+      supplyKey: true,
+      integerRules: [
+        v =>
+          (v == parseInt(v) && v >= 0) ||
+          "Integer greater or equal to 0 required"
+      ],
+      decimalsRules: [
+        v =>
+          (v == parseInt(v) && v >= 0) ||
+          "Integer greater or equal to 0 required"
+      ],
+      nameRules: [
+        v => !!v || "Input required",
+        v => v.length <= 100 || "Max length 100"
+      ],
+      symbolRules: [
+        v => !!v || "Input required",
+        v => v.length <= 100 || "Max length 100"
+        // v => /^[a-zA-Z]*$/.test(v) || "Only letters are allowed"
+      ]
     };
   },
   created() {
-    const vm = this;
-    EventBus.$on("tokenDetails", async function(value) {
-      vm.dialog = true;
-      vm.token = value;
-      vm.supply = amountWithDecimals(value.totalSupply, value.decimals);
-      vm.expiry = value.expiry;
-      vm.autoRenewPeriod = secondsToParts(value.autoRenewPeriod);
-      vm.headingColor = value.isNFT ? "" : "primary";
-      vm.title = value.isNFT
-        ? value.name
-        : value.name + " (" + value.symbol + ")";
-      vm.backgroundColor = value.isDeleted ? "red" : "white";
-      vm.fileStorageProtocol = value.fileStorageProtocol;
-      vm.keyValues = [];
-      if (value.isNFT) {
-        if (value.fileStorageProtocol === "HEDERA") {
-          // get file from Hedera
-          vm.fileId = value.symbol.replace("HEDERA://", "");
-          const fileData = await fileGetContents(vm.fileId);
-          const fileDataString = new TextDecoder().decode(fileData);
-          const tokenProperties = JSON.parse(fileDataString);
-          if (tokenProperties.photo) {
-            vm.imageData = tokenProperties.photo;
-            delete tokenProperties.photo;
-          }
-          for (const key in tokenProperties) {
-            vm.keyValues.push({ key: key, value: tokenProperties[key] });
-          }
-        } else if (value.fileStorageProtocol === "IPFS") {
-          vm.fileId = value.symbol.replace("IPFS://", "");
-          const fileData = await fileGetContents(vm.fileId, "IPFS");
-          const tokenProperties = await fileData.json();
-
-          if (tokenProperties.photo) {
-            vm.imageData = tokenProperties.photo;
-            delete tokenProperties.photo;
-          }
-          for (const key in tokenProperties) {
-            vm.keyValues.push({ key: key, value: tokenProperties[key] });
-          }
+    EventBus.$on("tokenCreate", () => {
+      this.valid = false;
+      this.decimals = "";
+      this.initialSupply = "";
+      this.name = "";
+      this.symbol = "";
+      this.defaultFreezeStatus = false;
+      this.adminKey = true;
+      this.wipeKey = true;
+      this.freezeKey = true;
+      this.kycKey = true;
+      this.supplyKey = true;
+      this.dialog = true;
+    });
+  },
+  methods: {
+    setFreeze() {
+      if (this.freezeKey === false) {
+        this.defaultFreezeStatus = false;
+      }
+    },
+    async create() {
+      EventBus.$emit("busy", true);
+      const privateKey = await PrivateKey.generate();
+      let _defaultFreezeStatus = false;
+      if (this.freezeKey) {
+        if (this.defaultFreezeStatus) {
+          _defaultFreezeStatus = true;
+        } else {
+          _defaultFreezeStatus = false;
         }
       }
-    });
+
+      const issuerAccount = getAccountDetails("Issuer");
+      const token = {
+        name: this.name,
+        symbol: this.symbol,
+        decimals: this.decimals,
+        initialSupply: this.initialSupply,
+        adminKey: this.adminKey ? privateKey.toString() : undefined,
+        kycKey: this.kycKey ? privateKey.toString() : undefined,
+        freezeKey: this.freezeKey ? privateKey.toString() : undefined,
+        wipeKey: this.wipeKey ? privateKey.toString() : undefined,
+        supplyKey: this.supplyKey ? privateKey.toString() : undefined,
+        defaultFreezeStatus: _defaultFreezeStatus,
+        autoRenewAccount: issuerAccount.accountId,
+        treasury: issuerAccount.accountId,
+        deleted: false,
+        key: privateKey.toString()
+      };
+      const newToken = await tokenCreate(token);
+      if (typeof newToken.tokenId !== "undefined") {
+        this.$store.commit("setToken", newToken);
+        this.dialog = false;
+      }
+      EventBus.$emit("busy", false);
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+:root {
+  --primary-color: #4caf50;
+  --secondary-color: #ffc107;
+  --background-color: #f5f5f5;
+  --text-color: #333;
+  --font-family: "Nunito", sans-serif;
+}
+
+.headline {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.v-card {
+  background-color: white;
+  color: var(--text-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.v-card-title {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.v-card-text {
+  padding: 20px;
+}
+
+.v-card-actions {
+  border-top: 1px solid #e0e0e0;
+  padding: 10px 20px;
+}
+
+small {
+  color: #757575;
+}
+
+.v-btn {
+  margin-left: 10px;
+}
+
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
-  color: #42b983;
-}
-html {
-  overflow: hidden !important;
-}
-
-.v-card {
-  display: flex !important;
-  flex-direction: column;
-}
-
-.v-card__text {
-  flex-grow: 1;
-  overflow: auto;
+  color: var(--primary-color);
 }
 </style>

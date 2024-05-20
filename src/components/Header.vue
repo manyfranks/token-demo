@@ -1,79 +1,92 @@
 <template>
-  <v-app-bar app color="primary" dark absolute>
+  <v-app-bar app color="transparent" dark absolute>
     <div class="d-flex align-center">
       <v-img
         alt="Hedera Logo"
-        class="shrink mr-2"
+        class="shrink mr-2 logo"
         contain
-        src="../assets/logo.svg"
+        src="../assets/download.png"
         transition="scale-transition"
         width="40"
       />
     </div>
-    <div>Hedera Token Service Demo</div>
+    <div class="title">Impact Credit Transfer Service</div>
 
     <v-spacer></v-spacer>
 
-    <div>
-      <v-btn
-          rounded
-          :color="issuerButtonColor"
-          @click="showUI('Issuer')"
-      >
-        Issuer ({{ walletIssuer }})
+    <div class="button-group">
+      <v-btn rounded :color="issuerButtonColor" @click="showUI('Issuer')">
+        Central Treasury ({{ walletIssuer }})
       </v-btn>
-      <a class="mr-2" v-bind:href="'https://hashscan.io/' +  network + '/account/' + walletIssuer"
-         target="_blank"><v-icon>mdi-open-in-new</v-icon></a>
+      <a
+        class="icon-link"
+        :href="'https://hashscan.io/' + network + '/account/' + walletIssuer"
+        target="_blank"
+      >
+        <v-icon>mdi-open-in-new</v-icon>
+      </a>
     </div>
 
-    <div v-if="numberOfAccounts !== 0" class="ma-2">
-        <v-btn
-            rounded
-            :color="aliceButtonColor"
-            :disabled="numberOfTokens === 0"
-            @click="showUI('Alice')"
-        >
-          Alice ({{ walletId1 }})
-        </v-btn>
-        <a class="mr-2" v-bind:href="'https://hashscan.io/' +  network + '/account/' + walletId1"
-           target="_blank"><v-icon>mdi-open-in-new</v-icon></a>
+    <div v-if="numberOfAccounts !== 0" class="button-group ma-2">
+      <v-btn
+        rounded
+        :color="aliceButtonColor"
+        :disabled="numberOfTokens === 0"
+        @click="showUI('Alice')"
+      >
+        Alice (Owner) ({{ walletId1 }})
+      </v-btn>
+      <a
+        class="icon-link"
+        :href="'https://hashscan.io/' + network + '/account/' + walletId1"
+        target="_blank"
+      >
+        <v-icon>mdi-open-in-new</v-icon>
+      </a>
 
-        <v-btn
-          rounded
-          :color="bobButtonColor"
-          :disabled="numberOfTokens === 0"
-          @click="showUI('Bob')"
-        >
-          Bob ({{ walletId2 }})
-        </v-btn>
-        <a v-bind:href="'https://hashscan.io/' +  network + '/account/' + walletId2"
-           target="_blank"><v-icon>mdi-open-in-new</v-icon></a>
+      <v-btn
+        rounded
+        :color="bobButtonColor"
+        :disabled="numberOfTokens === 0"
+        @click="showUI('Bob')"
+      >
+        Bob (Buyer) ({{ walletId2 }})
+      </v-btn>
+      <a
+        class="icon-link"
+        :href="'https://hashscan.io/' + network + '/account/' + walletId2"
+        target="_blank"
+      >
+        <v-icon>mdi-open-in-new</v-icon>
+      </a>
     </div>
 
     <v-spacer></v-spacer>
 
-    <v-btn icon @click="showCreate()">
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
-    <v-btn icon @click="showCompose()">
-      <v-icon>mdi-music</v-icon>
-    </v-btn>
-    <v-btn icon @click="showTransactions()">
-      <v-icon>mdi-download-network</v-icon>
-    </v-btn>
-    <v-btn icon class="ml-6" color="red" @click="nuke()">
-      <v-icon>mdi-nuke</v-icon>
-    </v-btn>
+    <div class="icon-group">
+      <v-btn icon @click="showCreate()">
+        <v-icon>mdi-new-box</v-icon>
+      </v-btn>
+      <!-- <v-btn icon @click="showCompose()">
+        <v-icon>mdi-music</v-icon>
+      </v-btn> -->
+      <v-btn icon @click="showTransactions()">
+        <v-icon>mdi-abacus</v-icon>
+      </v-btn>
+      <v-btn icon class="ml-6" color="white" @click="nuke()">
+        <v-icon>mdi-nuke</v-icon>
+      </v-btn>
+    </div>
   </v-app-bar>
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <script>
 import { getAccountDetails, notifySuccess } from "../utils";
 import { EventBus } from "../eventBus";
+
 export default {
   name: "Header",
-  data: function() {
+  data() {
     return {
       numberOfAccounts: this.$store.getters.numberOfAccounts,
       numberOfTokens: this.$store.getters.numberOfTokens,
@@ -88,7 +101,6 @@ export default {
     };
   },
   created() {
-    // not clean but can't get VUEX to trigger a watch, this is a quick fix
     this.interval = setInterval(() => {
       this.getWalletIds();
     }, 1000);
@@ -152,7 +164,39 @@ export default {
   }
 };
 </script>
+
 <style scoped>
+.v-app-bar {
+  background-color: transparent; /* Make header transparent */
+  box-shadow: none !important; /* Optional: remove shadow if desired */
+  color: white; /* Ensuring text is visible */
+	font-family: "Nunito", sans-serif;
+}
+
+.logo {
+  margin-right: 10px;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+	padding-right: 5px;
+}
+
+.icon-link {
+  margin-left: 10px;
+}
+
+.icon-group {
+  display: flex;
+  align-items: center;
+}
+
 h3 {
   margin: 40px 0 0;
 }
@@ -168,6 +212,7 @@ li {
 }
 
 a {
-  color: #42b983;
+  color: var(--primary-color);
+	padding-right: 5px;
 }
 </style>

@@ -64,7 +64,7 @@
       <v-toolbar>
         <v-tabs centered v-model="tabs">
           <v-tab>Transfers and swaps</v-tab>
-          <v-tab>Market place</v-tab>
+          <v-tab>NCX Marketplace</v-tab>
         </v-tabs>
       </v-toolbar>
 
@@ -94,7 +94,7 @@
                   </v-col>
                   <v-col cols="4" v-if="destination1 === marketPlaceAccountId">
                     <v-text-field
-                      label="Offer* (offer price in hBar)"
+                      label="Offer* (offer price in ETH)"
                       :rules="integerRules"
                       v-model="offer1"
                       required
@@ -130,7 +130,7 @@
                   </v-col>
                   <v-col cols="4" v-if="destination2 === marketPlaceAccountId">
                     <v-text-field
-                      label="Offer* (offer price in hBar)"
+                      label="Offer* (offer price in ETH)"
                       :rules="integerRules"
                       v-model="offer2"
                       required
@@ -151,13 +151,13 @@
                       :items="accounts"
                       item-text="name"
                       item-value="accountId"
-                      label="Hbar To/from"
+                      label="ETH To/from"
                       v-model="hbarTo"
                     ></v-select>
                   </v-col>
                   <v-col cols="3">
                     <v-text-field
-                      label="hBar* (negative to send)"
+                      label="ETH* (negative to send)"
                       :rules="integerRules"
                       v-model="hBars"
                       :disabled="!hbarTo"

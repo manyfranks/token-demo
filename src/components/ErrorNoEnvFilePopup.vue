@@ -11,11 +11,11 @@
             <v-row>
               <v-col cols="12">
                 <p>
-                  Hedera Testnet account details not found. Please
+                  Greenhouse Testnet account details not found. Please
                   <a href="https://portal.hedera.com/" target="_blank"
                     >register</a
                   >
-                  for a Hedera Testnet account and populate
+                  for a Greenhouse Testnet account and populate
                   <code>.env</code> file in the project source with your Testnet
                   credentials. <br />Once done, restart the server by running
                   <br /><code

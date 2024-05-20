@@ -1,73 +1,51 @@
 <template>
   <v-card>
-    <v-toolbar :color="headingColor" dark>
-      <v-toolbar-title class="white--text">{{ token.name }}</v-toolbar-title>
+    <v-toolbar flat dense color="transparent">
+      <v-toolbar-title class="white--text">{{ token.name }} ({{ token.symbol }})</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="showDetails">
-        <v-icon color="white">mdi-magnify</v-icon>
-      </v-btn>
+			<v-btn small class="newly-issued-button">NEW ISSUE</v-btn>
     </v-toolbar>
     <v-card-text>
       <v-row>
-        <v-col cols="6">Id</v-col>
-        <v-col cols="6"
-          ><a :href="tokenMirrorURL" target="_blank">{{
-            token.tokenId
-          }}</a></v-col
-        >
+        <v-col cols="6">Blockchain Address:</v-col>
+        <v-col cols="6">
+          <a :href="tokenMirrorURL" target="_blank">{{ token.tokenId }}</a>
+        </v-col>
       </v-row>
       <v-row>
-        <v-col cols="6">Symbol</v-col>
-        <v-col v-if="fileMirrorURL" cols="6"
-          ><a :title="token.symbol" :href="fileMirrorURL" target="_blank">{{
-            token.symbol.length > 19
-              ? token.symbol.substr(0, 18) + "&hellip;"
-              : token.symbol
-          }}</a></v-col
-        >
-        <v-col v-else cols="6">{{ token.symbol }}</v-col>
+        <v-col cols="6">Smart Contract Data:</v-col>
+        <v-col cols="6">
+          <a href="https://sepolia.etherscan.io/tx/0x61ac723cf4cc8d1a5e17a4d993bb6bb12a430a50d018bbd5c3b612b255b8113b" target="_blank">View On Etherscan</a>
+        </v-col>
       </v-row>
       <v-row>
-        <v-col cols="6">Decimals</v-col>
-        <v-col cols="6">{{ token.decimals }}</v-col>
+        <v-col cols="6">Token Symbol:</v-col>
+        <v-col cols="6">{{ token.symbol }}</v-col>
       </v-row>
       <v-row>
-        <v-col cols="6">Supply</v-col>
-        <v-col cols="6">{{ totalSupply }}</v-col>
+        <v-col cols="6">Fees Adjusted:</v-col>
+        <v-col cols="6">1.00%</v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6">Total Tokens Issued:</v-col>
+        <v-col cols="6">{{ token.totalSupply }}</v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6">Current USD Equivalent:</v-col>
+        <v-col cols="6">${{ token.totalSupply }}.00</v-col>
       </v-row>
     </v-card-text>
-    <v-card-actions class="justify-center">
-      <v-btn color="blue darken-1" icon @click="showAccounts">
+    <v-card-actions>
+			<v-btn class="update" icon @click="showAccounts">
         <v-icon>mdi-account-multiple</v-icon>
       </v-btn>
-      <v-btn
-        :disabled="!this.token.supplyKey"
-        color="blue darken-1"
-        icon
-        @click="mintToken"
-      >
-        <v-icon>mdi-bank-plus</v-icon>
+      <v-btn icon class="mint" @click="mintToken">
+        <v-icon>mdi-plus-circle-multiple-outline</v-icon>
       </v-btn>
-      <v-btn
-        :disabled="!this.token.supplyKey"
-        color="red darken-1"
-        icon
-        @click="burnToken"
-      >
-        <v-icon>mdi-bank-minus</v-icon>
+      <v-btn icon class="transfer" @click="transferToken">
+        <v-icon>mdi-shopping-outline</v-icon>
       </v-btn>
-      <v-btn icon color="blue darken-1" @click="transferToken">
-        <v-icon>mdi-bank-transfer</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        color="blue darken-1"
-        :disabled="!this.dirty"
-        @click="updateToken"
-      >
-        <v-icon>mdi-file-document-edit-outline</v-icon>
-      </v-btn>
-      <v-btn color="red darken-1" disabled icon @click="deleteToken">
+      <v-btn icon class="delete" @click="deleteToken">
         <v-icon>mdi-delete-outline</v-icon>
       </v-btn>
     </v-card-actions>
@@ -76,8 +54,7 @@
 
 <script>
 import { EventBus } from "../eventBus";
-import { amountWithDecimals } from "../utils";
-import { tokenDelete } from "../service/tokenService";
+import { amountWithDecimals, tokenDelete } from "../utils";
 
 export default {
   name: "TokenCard",
@@ -86,9 +63,7 @@ export default {
   },
   data: function() {
     return {
-      token: {
-        fileStorageProtocol: null
-      },
+      token: {},
       dirty: false,
       isDeleted: false,
       defaultFreezeStatus: false,
@@ -96,56 +71,21 @@ export default {
       tokenMirrorURL: "",
       fileMirrorURL: "",
       totalSupply: 0.0,
-      interval: undefined,
-      headingColor: "primary"
+      interval: undefined
     };
   },
   created() {
     this.token = this.$store.getters.getTokens[this.tokenId];
-    this.defaultFreezeStatus = this.token.defaultFreezeStatus;
-
-    this.token.isNFT =
-      this.token.symbol.includes("HEDERA://") ||
-      this.token.symbol.includes("IPFS://");
-    if (this.token.isNFT) {
-      // Check if this NFT token metadata stored on Hedera File Service or on IPFS.
-      if (this.token.symbol.includes("HEDERA://")) {
-        this.fileMirrorURL = this.mirrorURL.concat(
-          this.token.symbol.replace("HEDERA://", "")
-        );
-        this.token.fileStorageProtocol = "HEDERA";
-      } else if (this.token.symbol.includes("IPFS://")) {
-        // If the file is stored on IPFS - we resolve to the Cloudfare's IPFS viewer.
-        this.fileMirrorURL =
-          "https://cloudflare-ipfs.com/ipfs/" +
-          this.token.symbol.replace("IPFS://", "");
-        this.token.fileStorageProtocol = "IPFS";
-      }
-    }
-
-    if (this.isDeleted) {
-      this.headingColor = "red";
-    } else {
-      this.headingColor = this.token.isNFT ? "" : "primary";
-    }
-
-    // not clean but can't get VUEX to trigger a watch, this is a quick fix
+    this.tokenMirrorURL = this.mirrorURL.concat(this.tokenId);
+    this.totalSupply = amountWithDecimals(this.token.totalSupply, this.token.decimals);
     this.interval = setInterval(() => {
       this.token = this.$store.getters.getTokens[this.tokenId];
-      this.tokenMirrorURL = this.mirrorURL.concat(this.tokenId);
-      this.isDeleted = this.token.deleted;
-      this.totalSupply = amountWithDecimals(
-        this.token.totalSupply,
-        this.token.decimals
-      );
-      this.defaultFreezeStatus = this.token.defaultFreezeStatus;
     }, 1000);
   },
   beforeDestroy() {
     clearInterval(this.interval);
   },
-
-  methods: {
+	methods: {
     mintToken() {
       const mint = {
         operation: "mint",
@@ -205,20 +145,88 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+.v-card {
+    font-family: 'Nunito', sans-serif;
+    background-color: #ffffff !important; /* Very dark gray to black background */
+    color: whitesmoke !important; /* White text for high contrast */
+    border: 1px solid #333333; /* Slight border for definition */
+    border-radius: 8px; /* Sharp corners */
+		min-width: 400px;
+}
+
+.v-toolbar {
+    background-color: #1A1A1A !important; /* Slightly lighter than the card background for subtle contrast */
+    color: #ffffff !important;
+}
+
+.v-btn {
+    color: #4A90E2; /* Blue color for buttons to stand out */
+}
+
+.v-icon {
+    color: #4A90E2; /* Matching icons with button colors */
+}
+
+.details, .mint, .burn, .transfer, .update, .delete {
+    background-color: #262626 !important; /* Dark backgrounds for buttons */
+    border-radius: 4px; /* Slightly rounded for a modern touch */
+}
+
+.v-card-text, .v-card-actions {
+    padding: 16px; /* Adequate padding for content spacing */
+		color: #ffffff !important;
+}
+
+.details {
+  color: #ffffff !important; /* White for visibility */
+}
+
+.mint {
+  color: #a4de02 !important; /* Green for mint actions */
+}
+
+.burn {
+  color: #ff1744 !important; /* Red for burn actions */
+}
+
+.transfer {
+  color: #29b6f6 !important; /* Light blue for transfer actions */
+}
+
+.update {
+  color: #edd600 !important; /* Yellow for update actions */
+}
+
+.delete {
+  color: #dd2c00 !important; /* Deep orange for delete actions */
+}
+
+.newly-issued-button {
+    margin-right: 8px; /* Spacing between the button and the title */
+    border: 2px solid #42b983; /* Blue border to match icon colors */
+    color: #42b983; /* Text color */
+    border-radius: 4px; /* Rounded corners for the button */
+		background-color: transparent !important;
+}
+
 h3 {
   margin: 40px 0 0;
+	
 }
 
 ul {
   list-style-type: none;
   padding: 0;
+	
 }
 
 li {
   display: inline-block;
   margin: 0 10px;
+	
 }
 
 a {

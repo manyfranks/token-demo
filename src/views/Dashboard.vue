@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dashboard">
     <v-overlay :value="busy">
       <v-progress-circular
         v-if="busy"
@@ -7,13 +7,16 @@
         color="primary"
       ></v-progress-circular>
     </v-overlay>
-    <div v-if="showUI === 'Issuer'">
+
+    <div v-if="showUI === 'Issuer'" class="issuer-view">
       <div v-if="currentTokenId"><Accounts /></div>
       <div v-else><Tokens /></div>
     </div>
-    <div v-else>
+
+    <div v-else class="wallet-view">
       <Wallet v-bind:walletInstance="showUI" :key="walletKey" />
     </div>
+
     <TokenDetailsDialog />
     <TokenCreateDialog />
     <MintBurnDialog />
@@ -21,6 +24,7 @@
     <ComposerDialog />
     <TransactionsDrawer />
     <ErrorNoEnvFilePopup />
+
     <v-footer :color="footerColor" absolute class="font-weight-medium" padless>
       <v-card flat tile width="100%" :class="footerColor">
         <v-card-text :class="textColor">
@@ -102,20 +106,56 @@ export default {
   }
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
+:root {
+  --primary-color: #4caf50;
+  --secondary-color: #ffc107;
+  --text-color: #333;
+  --font-family: "Nunito", sans-serif;
+}
+
+.dashboard {
+  font-family: var(--font-family);
+  background-color: rgba(103, 103, 103, 0.4); /* Adjust alpha for greater transparency */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px; /* Rounded corners for the entire dashboard */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: adds shadow for a "lifted" effect */
+  backdrop-filter: blur(10px); /* Applies a blur effect on anything behind the dashboard */
+}
+
+.issuer-view,
+.wallet-view {
+  flex: 1;
+  padding: 20px;
+}
+
+.v-footer {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.v-footer .v-card-text {
+  text-align: center;
+}
+
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
-  color: #42b983;
+  color: var(--primary-color);
 }
 </style>

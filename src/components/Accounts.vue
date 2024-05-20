@@ -2,9 +2,11 @@
   <div>
     <v-container>
       <div v-if="accountRelations.length != 0">
-        Accounts associated with token {{ token.symbol }}
+        Users Associated with Impact Credits {{ token.symbol }}
       </div>
-      <div v-else>No Accounts associated with token {{ token.symbol }}</div>
+      <div v-else>
+        No Accounts associated with this token {{ token.symbol }}
+      </div>
       <v-btn color="blue darken-1" @click="returnToTokens" text>
         return to tokens
       </v-btn>

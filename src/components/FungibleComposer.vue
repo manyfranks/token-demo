@@ -13,7 +13,7 @@
       </v-stepper-step>
       <v-divider></v-divider>
       <v-stepper-step :complete="step > STEP_SUPPLY" :step="STEP_SUPPLY">
-        Supply
+        Amount
       </v-stepper-step>
       <v-divider></v-divider>
       <v-stepper-step :complete="step > STEP_MUTABLE" :step="STEP_MUTABLE">

@@ -7,10 +7,10 @@
       >)
     </v-card-title>
     <v-card-title class="justify-center"
-      >Token Balance: {{ balance }}</v-card-title
+      >Impact Credit Balance: {{ balance }}</v-card-title
     >
     <v-card-subtitle class="justify-center"
-      >hBar Balance: {{ accountRelation.hbarBalance }}</v-card-subtitle
+      >ETH Balance: {{ accountRelation.hbarBalance }}</v-card-subtitle
     >
     <v-card-text>
       <v-row>
@@ -65,7 +65,7 @@
         text
         :disabled="relation.kycStatus === null"
       >
-        Grant KYC
+        Approve KYC
       </v-btn>
       <v-btn v-if="wipeKey" color="red darken-1" @click="wipe" text>
         Wipe
