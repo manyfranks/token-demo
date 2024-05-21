@@ -3,7 +3,7 @@
     <v-toolbar flat dense color="transparent">
       <v-toolbar-title class="white--text">{{ token.name }} ({{ token.symbol }})</v-toolbar-title>
       <v-spacer></v-spacer>
-			<v-btn small class="newly-issued-button">NEW ISSUE</v-btn>
+			<v-btn small class="newly-issued-button">NEWLY ISSUED</v-btn>
     </v-toolbar>
     <v-card-text>
       <v-row>
