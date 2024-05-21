@@ -46,46 +46,29 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="6">
-                  <v-checkbox
-                    v-model="adminKey"
-                    label="Enable Admin"
-                  ></v-checkbox>
-                </v-col>
-                <v-col cols="6">
-                  <v-checkbox
-                    v-model="supplyKey"
-                    label="Change Supply"
-                  ></v-checkbox>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="6">
-                  <v-checkbox v-model="kycKey" label="Enable KYC"></v-checkbox>
-                </v-col>
-                <v-col cols="6">
-                  <v-checkbox
-                    v-model="wipeKey"
-                    label="Enable Wipe"
-                  ></v-checkbox>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="6">
-                  <v-checkbox
-                    v-model="freezeKey"
-                    label="Enable Freeze"
-                    @click="setFreeze"
-                  ></v-checkbox>
-                </v-col>
-                <v-col cols="6">
-                  <v-checkbox
-                    v-model="defaultFreezeStatus"
-                    :disabled="!freezeKey"
-                    label="Default"
-                  ></v-checkbox>
-                </v-col>
-              </v-row>
+								<v-col cols="6" class="checkbox-row">
+									<v-checkbox v-model="adminKey" label="Enable Admin"></v-checkbox>
+								</v-col>
+								<v-col cols="6" class="checkbox-row">
+									<v-checkbox v-model="supplyKey" label="Change Supply"></v-checkbox>
+								</v-col>
+							</v-row>
+							<v-row>
+								<v-col cols="6" class="checkbox-row">
+									<v-checkbox v-model="kycKey" label="Enable KYC"></v-checkbox>
+								</v-col>
+								<v-col cols="6" class="checkbox-row">
+									<v-checkbox v-model="wipeKey" label="Enable Wipe"></v-checkbox>
+								</v-col>
+							</v-row>
+							<v-row>
+								<v-col cols="6" class="checkbox-row">
+									<v-checkbox v-model="freezeKey" label="Enable Freeze" @click="setFreeze"></v-checkbox>
+								</v-col>
+								<v-col cols="6" class="checkbox-row">
+									<v-checkbox v-model="defaultFreezeStatus" :disabled="!freezeKey" label="Default"></v-checkbox>
+								</v-col>
+							</v-row>
             </v-container>
             <small>*indicates required field</small>
             <br />
@@ -220,37 +203,35 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.checkbox-row {
+  padding-top: 4px !important; /* Smaller top padding */
+  padding-bottom: 4px !important; /* Smaller bottom padding */
+}
 
 .v-card-title {
-	display: flex !important; /* Ensures the contents inside v-card-title can be flexibly aligned */
-  justify-content: center !important; /* Centers the content horizontally */
-  width: 100% !important; /* Ensures the title takes full width of its container */
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .v-card {
-    font-family: 'Nunito', sans-serif;
-    background-color: #ffffff !important; /* Very dark gray to black background */
-    color: #1a1a1a !important; /* White text for high contrast */
-    border: 1px solid #333333; /* Slight border for definition */
-    border-radius: 8px; /* Sharp corners */
+  font-family: 'Nunito', sans-serif;
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid #333333;
+  border-radius: 8px;
 }
 
 .image-container {
-	padding-top: 20px;
+  padding-top: 20px;
 }
 
-h3 {
+h3, ul, li, a {
   margin: 40px 0 0;
-}
-ul {
   list-style-type: none;
   padding: 0;
-}
-li {
   display: inline-block;
   margin: 0 10px;
-}
-a {
   color: #42b983;
 }
 </style>
