@@ -10,7 +10,7 @@
         width="40"
       />
     </div>
-    <div class="title">Impact Credit Transfer Service</div>
+    <div class="title">NCX Central Reserve</div>
 
     <v-spacer></v-spacer>
 

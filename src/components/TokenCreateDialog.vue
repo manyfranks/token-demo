@@ -4,11 +4,11 @@
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-card>
 					<div class="image-container">
-						<img src="../assets/NCX.png" alt="Impact Credits" width="100px" />
+						<img src="../assets/tokensymbols.png" alt="Impact Credits" width="150px" />
 					</div>
           <v-card-title style="display: flex; justify-content: center; width: 100%;">
-  Generate New Impact Credits
-</v-card-title>
+						Mint New Contracts or Currency
+					</v-card-title>
           <v-card-text>
             <v-container>
               <v-row>
@@ -105,7 +105,7 @@
               @click="create"
               :disabled="!valid"
             >
-              Create
+              Mint
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -128,7 +128,7 @@ export default {
       decimals: 0,
       initialSupply: 0,
       name: "Impact Credit	",
-      symbol: "IMC",
+      symbol: "IPC",
       defaultFreezeStatus: false,
       adminKey: true,
       wipeKey: true,
@@ -162,7 +162,7 @@ export default {
       this.decimals = "0";
       this.initialSupply = "";
       this.name = "Impact Credit";
-      this.symbol = "IMC";
+      this.symbol = "IPC";
       this.defaultFreezeStatus = false;
       this.adminKey = true;
       this.wipeKey = true;
