@@ -153,9 +153,9 @@ export default {
   background-color: #ffffff; /* Ensures the background is white */
   color: whitesmoke; /* Ensures text color is high contrast */
   border: 1px solid #E302AB; /* Pink border as specified */
-  border-radius: 8px; /* Maintains rounded corners */
+  border-radius: 5px; /* Maintains rounded corners */
   min-width: 400px; /* Minimum width for the card */
-  box-shadow: 0 0 15px 5px #E302AB !important; /* Stronger glow for visibility */
+  box-shadow: 0 0 20px 1px #E302AB !important; /* Stronger glow for visibility */
 }
 
 .v-toolbar {
