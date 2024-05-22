@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="custom-glow">
     <v-toolbar flat dense color="transparent">
       <v-toolbar-title class="white--text">{{ token.name }} ({{ token.symbol }})</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -24,7 +24,7 @@
       </v-row>
       <v-row>
         <v-col cols="6">Fees Adjusted:</v-col>
-        <v-col cols="6">1.00%</v-col>
+        <v-col cols="6">0.50%</v-col>
       </v-row>
       <v-row>
         <v-col cols="6">Total Tokens Issued:</v-col>
@@ -148,13 +148,14 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
 
-.v-card {
-    font-family: 'Nunito', sans-serif;
-    background-color: #ffffff !important; /* Very dark gray to black background */
-    color: whitesmoke !important; /* White text for high contrast */
-    border: 1px solid #333333; /* Slight border for definition */
-    border-radius: 8px; /* Sharp corners */
-		min-width: 400px;
+.v-card.custom-glow {
+  font-family: 'Nunito', sans-serif;
+  background-color: #ffffff; /* Ensures the background is white */
+  color: whitesmoke; /* Ensures text color is high contrast */
+  border: 1px solid #E302AB; /* Pink border as specified */
+  border-radius: 8px; /* Maintains rounded corners */
+  min-width: 400px; /* Minimum width for the card */
+  box-shadow: 0 0 15px 5px #E302AB !important; /* Stronger glow for visibility */
 }
 
 .v-toolbar {
@@ -177,7 +178,7 @@ export default {
 
 .v-card-text, .v-card-actions {
     padding: 16px; /* Adequate padding for content spacing */
-		color: #ffffff !important;
+    color: #ffffff !important;
 }
 
 .details {
@@ -206,27 +207,24 @@ export default {
 
 .newly-issued-button {
     margin-right: 8px; /* Spacing between the button and the title */
-    border: 2px solid #42b983; /* Blue border to match icon colors */
-    color: #42b983; /* Text color */
+    border: 2px solid #5FC1D7; /* Blue border to match icon colors */
+    color: #5FC1D7; /* Text color */
     border-radius: 4px; /* Rounded corners for the button */
-		background-color: transparent !important;
+    background-color: transparent !important;
 }
 
 h3 {
   margin: 40px 0 0;
-	
 }
 
 ul {
   list-style-type: none;
   padding: 0;
-	
 }
 
 li {
   display: inline-block;
   margin: 0 10px;
-	
 }
 
 a {

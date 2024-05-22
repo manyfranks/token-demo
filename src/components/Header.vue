@@ -15,7 +15,7 @@
     <v-spacer></v-spacer>
 
     <div class="button-group">
-      <v-btn rounded :color="issuerButtonColor" @click="showUI('Issuer')">
+      <v-btn rounded :class="issuerGradient" @click="showUI('Issuer')">
         Central Treasury ({{ walletIssuer }})
       </v-btn>
       <a
@@ -30,7 +30,7 @@
     <div v-if="numberOfAccounts !== 0" class="button-group ma-2">
       <v-btn
         rounded
-        :color="aliceButtonColor"
+        :class="aliceGradient"
         :disabled="numberOfTokens === 0"
         @click="showUI('Alice')"
       >
@@ -46,7 +46,7 @@
 
       <v-btn
         rounded
-        :color="bobButtonColor"
+        :class="bobGradient"
         :disabled="numberOfTokens === 0"
         @click="showUI('Bob')"
       >
@@ -67,9 +67,6 @@
       <v-btn icon @click="showCreate()">
         <v-icon>mdi-new-box</v-icon>
       </v-btn>
-      <!-- <v-btn icon @click="showCompose()">
-        <v-icon>mdi-music</v-icon>
-      </v-btn> -->
       <v-btn icon @click="showTransactions()">
         <v-icon>mdi-abacus</v-icon>
       </v-btn>
@@ -100,6 +97,17 @@ export default {
       network: process.env.VUE_APP_NETWORK
     };
   },
+  computed: {
+    issuerGradient() {
+      return this.issuerButtonColor === 'success' ? 'gradient-success' : 'gradient-primary';
+    },
+    aliceGradient() {
+      return this.aliceButtonColor === 'success' ? 'gradient-success' : 'gradient-primary';
+    },
+    bobGradient() {
+      return this.bobButtonColor === 'success' ? 'gradient-success' : 'gradient-primary';
+    },
+  },
   created() {
     this.interval = setInterval(() => {
       this.getWalletIds();
@@ -118,12 +126,6 @@ export default {
         this.walletId2 = getAccountDetails("Bob").accountId;
         this.walletIssuer = getAccountDetails("Issuer").accountId;
       }
-    },
-    showCompose() {
-      EventBus.$emit("tokenCompose", "");
-    },
-    showCreate() {
-      EventBus.$emit("tokenCreate", "");
     },
     showUI(ui) {
       switch (ui) {
@@ -167,10 +169,20 @@ export default {
 
 <style scoped>
 .v-app-bar {
-  background-color: transparent; /* Make header transparent */
-  box-shadow: none !important; /* Optional: remove shadow if desired */
-  color: white; /* Ensuring text is visible */
-	font-family: "Nunito", sans-serif;
+  background-color: transparent;
+  box-shadow: none;
+  color: white;
+  font-family: "Nunito", sans-serif;
+}
+
+.gradient-success {
+  background: linear-gradient(to bottom right, #E10044 0%, #E10044 5.21%, #E302AB 100%);
+  color: white;
+}
+
+.gradient-primary {
+  background: linear-gradient(to bottom right, #000000 0%, #202532 5.21%, #434343 100%);
+  color: white;
 }
 
 .logo {
@@ -184,8 +196,7 @@ export default {
 
 .button-group {
   display: flex;
-  align-items: center;
-	padding-right: 5px;
+  align-items:center;
 }
 
 .icon-link {
@@ -195,24 +206,5 @@ export default {
 .icon-group {
   display: flex;
   align-items: center;
-}
-
-h3 {
-  margin: 40px 0 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: var(--primary-color);
-	padding-right: 5px;
 }
 </style>

@@ -36,13 +36,15 @@ export default {
   font-family: var(--font-family);
   text-align: center;
   color: var(--text-color);
-  background: radial-gradient(circle at top right,	#006466, #065a60,	#0b525b,	#144552,	#1b3a4b,	#212f45,	#272640,	#312244,	#3e1f47, #4d194d);
-  background-size: 600% 600%;
-  animation: GradientFlow 30s ease infinite;
+  background: #171920;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+	background-image: url('./assets/isobackgroundopacity25.png');
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-size: 15%;
 }
 
 @keyframes GradientFlow {

@@ -72,7 +72,7 @@ export default {
   data: function() {
     return {
       message: "",
-      footerColor: "primary",
+      footerColor: "success",
       textColor: "white--text",
       busy: false,
       showUI: "Issuer",
@@ -117,13 +117,14 @@ export default {
 
 .dashboard {
   font-family: var(--font-family);
-  background-color: rgba(103, 103, 103, 0.4); /* Adjust alpha for greater transparency */
+  background-color: rgba(32, 37, 50, 0.4); /* Adjust alpha for greater transparency */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   border-radius: 20px; /* Rounded corners for the entire dashboard */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: adds shadow for a "lifted" effect */
   backdrop-filter: blur(10px); /* Applies a blur effect on anything behind the dashboard */
+	border: 3px solid #e302ab;
 }
 
 .issuer-view,
