@@ -91,9 +91,9 @@ export default {
       walletId1: "",
       walletIssuer: "",
       interval: undefined,
-      issuerButtonColor: "success",
-      aliceButtonColor: "primary",
-      bobButtonColor: "primary",
+      issuerButtonColor: "gradient-success",
+      aliceButtonColor: "gradient-primary",
+      bobButtonColor: "gradient-primary",
       network: process.env.VUE_APP_NETWORK
     };
   },
@@ -127,6 +127,12 @@ export default {
         this.walletIssuer = getAccountDetails("Issuer").accountId;
       }
     },
+    showCompose() {
+      EventBus.$emit("tokenCompose", "");
+    },
+    showCreate() {
+      EventBus.$emit("tokenCreate", "");
+    },
     showUI(ui) {
       switch (ui) {
         case "Issuer":
@@ -145,7 +151,6 @@ export default {
           this.bobButtonColor = "success";
           break;
       }
-
       EventBus.$emit("viewChange", ui);
     },
     showTransactions() {
@@ -181,6 +186,16 @@ export default {
 }
 
 .gradient-primary {
+  background: linear-gradient(to bottom right, #000000 0%, #202532 5.21%, #434343 100%);
+  color: white;
+}
+
+.gradient-alice {
+  background: linear-gradient(to bottom right, #000000 0%, #a14513 5.21%, #ED6218 100%);
+  color: white;
+}
+
+.gradient-bob {
   background: linear-gradient(to bottom right, #000000 0%, #202532 5.21%, #434343 100%);
   color: white;
 }
