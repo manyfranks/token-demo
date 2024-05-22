@@ -14,7 +14,7 @@
               <v-row>
                 <v-col cols="6">
                   <v-text-field
-                    label="Token Name*"
+                    label="Token Name (Project)*"
                     :rules="nameRules"
                     v-model="name"
                     required
@@ -22,7 +22,7 @@
                 </v-col>
 								<v-col cols="6">
                   <v-text-field
-                    label="Symbol*"
+                    label="Symbol (UCID)*"
                     :rules="symbolRules"
                     v-model="symbol"
                     required
@@ -33,12 +33,12 @@
 
                 <v-col cols="6">
                   <v-text-field
-                    label="Transaction Fees"
+                    label="Transaction Fees (FPT)"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="6">
                   <v-text-field
-                    label="Total Token Amount*"
+                    label="Allocated Project Supply (APS)*"
                     required
                     v-model="initialSupply"
                     :rules="integerRules"
