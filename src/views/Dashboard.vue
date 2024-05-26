@@ -17,7 +17,7 @@
       <Wallet v-bind:walletInstance="showUI" :key="walletKey" />
     </div>
 
-    <TokenDetailsDialog />
+    <!-- <TokenDetailsDialog /> -->
     <TokenCreateDialog />
     <MintBurnDialog />
     <TransferDialog />
@@ -40,7 +40,7 @@ import Tokens from "../components/Tokens";
 import Accounts from "../components/Accounts";
 import Wallet from "../components/Wallet";
 import { EventBus } from "../eventBus";
-import TokenDetailsDialog from "../components/TokenDetailsDialog";
+// import TokenDetailsDialog from "../components/TokenDetailsDialog";
 import MintBurnDialog from "../components/MintBurnDialog";
 import TokenCreateDialog from "../components/TokenCreateDialog";
 import TransferDialog from "../components/TransferDialog";
@@ -58,7 +58,7 @@ export default {
     ComposerDialog,
     TransferDialog,
     MintBurnDialog,
-    TokenDetailsDialog,
+
     TokenCreateDialog,
     Tokens,
     Accounts,

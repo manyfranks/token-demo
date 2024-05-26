@@ -89,7 +89,7 @@
             <small>*indicates required field</small>
             <br />
             <small>
-              Admin, KYC, Wipe, and Freeze keys will default to a common key if
+              Central Treasury, KYC, Wipe, and Freeze keys will default to a common key if
               set. They can, however, be set independently through the API.
             </small>
           </v-card-text>

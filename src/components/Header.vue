@@ -15,7 +15,7 @@
     <v-spacer></v-spacer>
 
     <div class="button-group">
-      <v-btn rounded :class="issuerGradient" @click="showUI('Issuer')">
+      <v-btn rounded :style="issuerGradientStyle" @click="showUI('Issuer')">
         Central Treasury ({{ walletIssuer }})
       </v-btn>
       <a
@@ -30,7 +30,7 @@
     <div v-if="numberOfAccounts !== 0" class="button-group ma-2">
       <v-btn
         rounded
-        :class="aliceGradient"
+        :style="aliceGradientStyle"
         :disabled="numberOfTokens === 0"
         @click="showUI('Alice')"
       >
@@ -46,7 +46,7 @@
 
       <v-btn
         rounded
-        :class="bobGradient"
+        :style="bobGradientStyle"
         :disabled="numberOfTokens === 0"
         @click="showUI('Bob')"
       >
@@ -97,17 +97,23 @@ export default {
       network: process.env.VUE_APP_NETWORK
     };
   },
-  computed: {
-    issuerGradient() {
-      return this.issuerButtonColor === 'success' ? 'gradient-success' : 'gradient-primary';
-    },
-    aliceGradient() {
-      return this.aliceButtonColor === 'success' ? 'gradient-success' : 'gradient-primary';
-    },
-    bobGradient() {
-      return this.bobButtonColor === 'success' ? 'gradient-success' : 'gradient-primary';
-    },
+	computed: {
+  issuerGradientStyle() {
+    return this.issuerButtonColor === 'success'
+      ? 'background: linear-gradient(to bottom right, #E10044 0%, #E10044 5.21%, #E302AB 100%); color: white;'
+      : 'background: linear-gradient(to bottom right, #000000 0%, #202532 5.21%, #434343 100%); color: white;';
   },
+  aliceGradientStyle() {
+    return this.aliceButtonColor === 'success'
+      ? 'background: linear-gradient(to bottom right, #E10044 0%, #E10044 5.21%, #E302AB 100%); color: white;'
+      : 'background: linear-gradient(to bottom right, #000000 0%, #202532 5.21%, #434343 100%); color: white;';
+  },
+  bobGradientStyle() {
+    return this.bobButtonColor === 'success'
+      ? 'background: linear-gradient(to bottom right, #E10044 0%, #E10044 5.21%, #E302AB 100%); color: white;'
+      : 'background: linear-gradient(to bottom right, #000000 0%, #202532 5.21%, #434343 100%); color: white;';
+  },
+},
   created() {
     this.interval = setInterval(() => {
       this.getWalletIds();
@@ -180,26 +186,6 @@ export default {
   font-family: "Nunito", sans-serif;
 }
 
-.gradient-success {
-  background: linear-gradient(to bottom right, #E10044 0%, #E10044 5.21%, #E302AB 100%);
-  color: white;
-}
-
-.gradient-primary {
-  background: linear-gradient(to bottom right, #000000 0%, #202532 5.21%, #434343 100%);
-  color: white;
-}
-
-.gradient-alice {
-  background: linear-gradient(to bottom right, #000000 0%, #a14513 5.21%, #ED6218 100%);
-  color: white;
-}
-
-.gradient-bob {
-  background: linear-gradient(to bottom right, #000000 0%, #202532 5.21%, #434343 100%);
-  color: white;
-}
-
 .logo {
   margin-right: 10px;
 }
@@ -211,7 +197,7 @@ export default {
 
 .button-group {
   display: flex;
-  align-items:center;
+  align-items: center;
 }
 
 .icon-link {

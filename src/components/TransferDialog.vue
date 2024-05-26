@@ -10,7 +10,7 @@
             Transfer one Non Fungible Token
           </v-card-subtitle>
           <v-card-subtitle v-if="!isNFT" class="text-left">
-            Transfer these Impact Credits to any approved user below
+            Transfer tokens to approved users
           </v-card-subtitle>
           <v-card-text>
             <v-container>
@@ -57,7 +57,7 @@
               <v-row v-else>
                 <v-col cols="12">
                   <v-text-field
-                    label="Fees* (Token(s) recipient pays in ETH)"
+                    label="Transfer Fee* (Token(s) recipient pays in hBar to Central Treasury)"
                     :rules="integerRules"
                     v-model="hBars"
                     required
