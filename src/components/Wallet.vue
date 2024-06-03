@@ -88,7 +88,7 @@
                       :items="accountTokens"
                       item-text="tokenName"
                       item-value="tokenId"
-                      label="First Token"
+                      label="Select Token for Transfer"
                       v-model="tokenToTransfer1"
                     ></v-select>
                   </v-col>
@@ -109,7 +109,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-                <v-row dense>
+                <!-- <v-row dense>
                   <v-col cols="3">
                     <v-select
                       :items="accounts"
@@ -163,7 +163,7 @@
                       :disabled="!hbarTo"
                     ></v-text-field>
                   </v-col>
-                </v-row>
+                </v-row> -->
               </v-card-text>
               <v-card-actions class="justify-end">
                 <v-btn
@@ -190,6 +190,10 @@
                 item.tokenId
               }}</a
               >)
+            </template>
+
+            <template v-slot:item.tokenAmount="{ item }">
+              {{ item.tokenAmount }}
             </template>
 
             <template v-slot:item.actions="{ item }">
@@ -251,6 +255,7 @@ export default {
       bidHeaders: [
         { text: "Token", align: "center", value: "tokenName" },
         { text: "Offer", align: "center", value: "offerAmount" },
+        { text: "Token Amount", align: "center", value: "tokenAmount" }, // New column for token amount
         { text: "", align: "center", value: "actions" }
       ],
       tabs: null,
@@ -428,7 +433,10 @@ export default {
       EventBus.$emit("busy", true);
       // if transferring to marketplace, we only transfer 1 token
       if (this.destination1 === this.marketPlaceAccountId) {
-        this.quantityToTransfer1 = 1;
+        this.quantityToTransfer1 =
+          this.accountTokens.find(
+            token => token.tokenId === this.tokenToTransfer1
+          )?.tokenBalance || 0;
       }
       if (this.destination2 === this.marketPlaceAccountId) {
         this.quantityToTransfer2 = 1;
@@ -449,6 +457,7 @@ export default {
           const bid = {
             tokenId: this.tokenToTransfer1,
             offerAmount: this.offer1,
+            tokenAmount: this.quantityToTransfer1, // Store the quantity transferred
             tokenIssuer: this.walletInstance
           };
           this.$store.commit("addBid", bid);

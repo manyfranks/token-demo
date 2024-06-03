@@ -15,7 +15,7 @@
       <v-row>
         <v-col cols="6">Smart Contract Data:</v-col>
         <v-col cols="6">
-          <a href="https://sepolia.etherscan.io/tx/0x61ac723cf4cc8d1a5e17a4d993bb6bb12a430a50d018bbd5c3b612b255b8113b" target="_blank">View On Etherscan</a>
+          <a href="https://etherscan.io/address/0xddBca2B2038209946f4D624da2ae2AdfB06A7dc0#code" target="_blank">View On Etherscan</a>
         </v-col>
       </v-row>
       <v-row>
