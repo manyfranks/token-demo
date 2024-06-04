@@ -4,7 +4,7 @@
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-card>
 					<div class="image-container">
-						<img src="../assets/ciplogo.png" alt="Impact Credits" width="100px" />
+						<img src="../assets/ciplogo.png" alt="Impact Credits" width="75px" />
 					</div>
           <v-card-title style="display: flex; justify-content: center; width: 100%;">
 						Mint New Contracts or Currency
@@ -205,7 +205,7 @@ export default {
 <style scoped>
 ::v-deep .v-dialog.v-dialog--active {
   position: absolute !important;
-  margin-top: -150px !important;
+  margin-top: -200px !important;
 }
 .checkbox-row {
   padding-top: 4px !important; /* Smaller top padding */

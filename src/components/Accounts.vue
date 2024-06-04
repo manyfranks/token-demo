@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-container>
-      <div v-if="accountRelations.length != 0">
+      <div v-if="accountRelations.length != 0" class="users-associated">
         Users Associated with Impact Credits {{ token.symbol }}
       </div>
-      <div v-else>
+      <div v-else class="users-non-associated">
         No Accounts associated with this token {{ token.symbol }}
       </div>
       <v-btn color="blue darken-1" @click="returnToTokens" text>
@@ -85,6 +85,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.users-associated {
+  color: white; /* Sets text color to white for users associated */
+}
+
+.no-accounts {
+  color: lightgreen; /* Sets text color to light green for no accounts associated */
+}
+
 h3 {
   margin: 40px 0 0;
 }
