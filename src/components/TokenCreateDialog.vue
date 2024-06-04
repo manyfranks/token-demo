@@ -205,7 +205,7 @@ export default {
 <style scoped>
 ::v-deep .v-dialog.v-dialog--active {
   position: absolute !important;
-  margin-top: -300px !important;
+  margin-top: -150px !important;
 }
 .checkbox-row {
   padding-top: 4px !important; /* Smaller top padding */
