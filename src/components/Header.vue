@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="transparent" dark absolute>
-    <div class="d-flex align-center">
+    <!-- <div class="d-flex align-center">
       <v-img
         alt="Hedera Logo"
         class="shrink mr-2 logo"
@@ -10,9 +10,7 @@
         width="40"
       />
     </div>
-    <div class="title">NCX Central Reserve</div>
-
-    <v-spacer></v-spacer>
+    <div class="title">NCX Central Reserve</div> -->
 
     <div class="button-group">
       <v-btn rounded :style="issuerGradientStyle" @click="showUI('Issuer')">
@@ -27,14 +25,16 @@
       </a>
     </div>
 
-    <div v-if="numberOfAccounts !== 0" class="button-group ma-2">
+		<v-spacer></v-spacer>
+    
+		<div v-if="numberOfAccounts !== 0" class="button-group ma-2">
       <v-btn
         rounded
         :style="aliceGradientStyle"
         :disabled="numberOfTokens === 0"
         @click="showUI('Alice')"
       >
-        Alice (Owner) ({{ walletId1 }})
+        Alice - Project Owner ({{ walletId1 }})
       </v-btn>
       <a
         class="icon-link"
@@ -50,7 +50,7 @@
         :disabled="numberOfTokens === 0"
         @click="showUI('Bob')"
       >
-        Bob (Buyer) ({{ walletId2 }})
+        Bob - Buyer ({{ walletId2 }})
       </v-btn>
       <a
         class="icon-link"
