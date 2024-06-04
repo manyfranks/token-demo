@@ -1,10 +1,10 @@
 <template>
-  <v-row justify="center">
+  <v-row justify="center" >
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-card>
 					<div class="image-container">
-						<img src="../assets/tokensymbols.png" alt="Impact Credits" width="150px" />
+						<img src="../assets/ciplogo.png" alt="Impact Credits" width="100px" />
 					</div>
           <v-card-title style="display: flex; justify-content: center; width: 100%;">
 						Mint New Contracts or Currency

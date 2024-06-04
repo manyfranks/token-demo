@@ -1,0 +1,4 @@
+.move-up-100 {
+  position: relative;
+  top: 100px; /* Move the element up 100px */
+}
