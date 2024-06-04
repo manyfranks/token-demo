@@ -203,6 +203,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+::v-deep .v-dialog.v-dialog--active {
+  position: absolute !important;
+  margin-top: -300px !important;
+}
 .checkbox-row {
   padding-top: 4px !important; /* Smaller top padding */
   padding-bottom: 4px !important; /* Smaller bottom padding */
