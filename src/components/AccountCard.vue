@@ -7,7 +7,7 @@
       >)
     </v-card-title>
     <v-card-title class="justify-center"
-      >Impact Credit Balance: {{ balance }}</v-card-title
+      >Available Balance: {{ balance }}</v-card-title
     >
     <v-card-subtitle class="justify-center"
       >ETH Balance: {{ accountRelation.hbarBalance }}</v-card-subtitle

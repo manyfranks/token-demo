@@ -79,7 +79,7 @@
                       :items="accounts"
                       item-text="name"
                       item-value="accountId"
-                      label="To/from"
+                      label="Transfer To"
                       v-model="destination1"
                     ></v-select>
                   </v-col>

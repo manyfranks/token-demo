@@ -2,12 +2,12 @@
   <div>
     <v-container>
       <div v-if="accountRelations.length != 0" class="users-associated">
-        Users Associated with Impact Credits {{ token.symbol }}
+        Associated {{ token.name }} Token Production
       </div>
       <div v-else class="users-non-associated">
         No Accounts associated with this token {{ token.symbol }}
       </div>
-      <v-btn color="blue darken-1" @click="returnToTokens" text>
+      <v-btn color="amber lighten-1" @click="returnToTokens" text>
         return to tokens
       </v-btn>
       <v-layout row wrap>
@@ -19,10 +19,6 @@
           <AccountCard v-bind:accountRelation="accountRelation"></AccountCard>
         </v-col>
       </v-layout>
-      <small v-if="accountRelations.length != 0">
-        * An amount to wipe can be set through the API, this demo wipes the
-        entire balance.
-      </small>
     </v-container>
   </div>
 </template>
