@@ -43,9 +43,9 @@ export default {
     if (
       !process.env.VUE_APP_OPERATOR_KEY ||
       !process.env.VUE_APP_OPERATOR_ID ||
-      process.env.VUE_APP_OPERATOR_ID === "0.0.xxxx" ||
+			process.env.VUE_APP_OPERATOR_ID === "0.0.xxxx" ||
       process.env.VUE_APP_OPERATOR_KEY === "302xxx"
-    ) {
+		) {
       this.popup = true;
     }
   }
