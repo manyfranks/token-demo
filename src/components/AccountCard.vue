@@ -94,7 +94,7 @@ export default {
   data: function() {
     return {
       dirty: false,
-      mirrorURL: "https://testnet.dragonglass.me/hedera/search?q=",
+      mirrorURL: "https://dragonglass.me/hedera/search?q=",
 
       issuer: this.$store.getters.getAccounts[this.accountRelation.accountId]
         .account.wallet,

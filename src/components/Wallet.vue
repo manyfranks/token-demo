@@ -227,7 +227,7 @@ export default {
   props: ["walletInstance"],
   data: function() {
     return {
-      mirrorURL: "https://testnet.dragonglass.me/hedera/search?q=",
+      mirrorURL: "https://dragonglass.me/hedera/search?q=",
       valid: false,
       loading: false,
       numberOfTokens: this.$store.getters.numberOfTokens,
