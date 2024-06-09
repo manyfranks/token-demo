@@ -54,7 +54,8 @@
 
 <script>
 import { EventBus } from "../eventBus";
-import { amountWithDecimals, tokenDelete } from "../utils";
+import { amountWithDecimals } from "../utils";
+import { tokenDelete } from "../service/tokenService.js";
 
 export default {
   name: "TokenCard",

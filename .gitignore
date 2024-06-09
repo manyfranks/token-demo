@@ -7,10 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 
 # local environment
-.env
-.env.production
-.env.local
-.env.*.local
+# .env
+# .env.production
+# .env.local
+# .env.*.local
 
 .DS_Store
 node_modules
