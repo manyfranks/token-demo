@@ -67,7 +67,7 @@ export default {
       dirty: false,
       isDeleted: false,
       defaultFreezeStatus: false,
-      mirrorURL: "https://dragonglass.me/hedera/search?q=",
+      mirrorURL: "https://testnet.dragonglass.me/hedera/search?q=",
       tokenMirrorURL: "",
       fileMirrorURL: "",
       totalSupply: 0.0,
