@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # local environment
-# .env
+.env
 .env.production
 .env.local
 .env.*.local
