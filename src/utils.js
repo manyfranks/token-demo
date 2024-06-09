@@ -36,22 +36,16 @@ export function getUserAccountsWithNames(exclude) {
     name: ""
   };
   accounts.push(account);
-
   if (state.getters.numberOfAccounts !== 0) {
-    const accountList = state.getters.getAccounts;
-    console.log("Account List:", accountList); // Debug log to check accounts list
-
-    for (const key in accountList) {
-      const acc = accountList[key];
-      if (!acc || !acc.account) {
-        console.warn(`Account for key ${key} is undefined or missing account details`);
-        continue;
-      }
-      if (acc.account.wallet !== "Issuer" && acc.account.wallet !== exclude) {
-        accounts.push({
-          accountId: key,
-          name: acc.account.wallet
-        });
+    for (const key in state.getters.getAccounts) {
+      if (state.getters.getAccounts[key].account.wallet !== "Issuer") {
+        if (state.getters.getAccounts[key].account.wallet !== exclude) {
+          const account = {
+            accountId: key,
+            name: state.getters.getAccounts[key].account.wallet
+          };
+          accounts.push(account);
+        }
       }
     }
   }
@@ -64,40 +58,21 @@ export function amountWithDecimals(amount, decimals) {
 }
 
 export function getPrivateKeyForAccount(accountId) {
-  const account = state.getters.getAccounts[accountId];
-  if (account && account.account) {
-    return account.account.privateKey;
-  } else {
-    console.warn(`Private key for account ${accountId} is undefined`);
-    return "";
-  }
+  return state.getters.getAccounts[accountId].account.privateKey;
 }
 
 export function getAccountDetails(account) {
   if (state.getters.numberOfAccounts !== 0) {
-    const accounts = state.getters.getAccounts;
-    console.log("Accounts:", accounts); // Debug log to check accounts
-
-    for (const key in accounts) {
-      const acc = accounts[key];
-      if (!acc) {
-        console.warn(`Account details for key ${key} are undefined`); // Warning for undefined account details
-        continue;
-      }
-      const accountDetails = acc.account;
-      if (!accountDetails) {
-        console.warn(`Account details for key ${key} are undefined`); // Warning for undefined account details
-        continue;
-      }
-      console.log(`Processing account: ${accountDetails.wallet}`);
-      if (accountDetails.wallet === account) {
+    for (const key in state.getters.getAccounts) {
+      if (state.getters.getAccounts[key].account.wallet === account) {
         return {
           accountId: key,
-          privateKey: accountDetails.privateKey
+          privateKey: state.getters.getAccounts[key].account.privateKey
         };
       }
     }
   }
+
   return {
     accountId: "",
     privateKey: ""

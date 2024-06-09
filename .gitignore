@@ -13,7 +13,7 @@
 # .env.*.local
 
 # .DS_Store
-# node_modules
+node_modules
 # /dist
 
 # # Editor directories and files
@@ -24,4 +24,3 @@
 # *.njsproj
 # *.sln
 # *.sw?
-node_modules
