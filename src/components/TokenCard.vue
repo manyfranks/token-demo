@@ -31,7 +31,7 @@
         <v-col cols="6">{{ token.totalSupply }}</v-col>
       </v-row>
       <v-row>
-        <v-col cols="6">Current USD Equivalent:</v-col>
+        <v-col cols="6">Current USDT Amount:</v-col>
         <v-col cols="6">${{ token.totalSupply }}.00</v-col>
       </v-row>
     </v-card-text>
